@@ -1,51 +1,22 @@
 package utilities;
 
-import com.github.javafaker.Faker;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.*;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.function.Function;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class ReusableMethods {
-
-    static Faker faker;
-    static Actions actions;
-    static LocalDateTime date;
-    static String tarih;
-
-    static Select select;
-    static WebElement ddm;
-
-
-    public static void Date(){
-
-        date = LocalDateTime.now();
-        DateTimeFormatter formater = DateTimeFormatter.ofPattern("YYYYMMddHHmmss");
-        tarih = date.format(formater);
-    }
-
-    public static Faker getFaker() { // getFaker method
-        return faker = new Faker();
-    }
-
-    public static Actions getActions() { //getActions method
-        return actions = new Actions(Driver.getDriver());
-    }
-
-    public static Select select(WebElement ddm){ //select method
-
-        return select = new Select(ddm);
-    }
+    //========ScreenShot(Syafanın resmini alma)=====//
     public static String getScreenshot(String name) throws IOException {
         // naming the screenshot with the current date to avoid duplication
         String date = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
@@ -59,7 +30,19 @@ public class ReusableMethods {
         FileUtils.copyFile(source, finalDestination);
         return target;
     }
-    //========Switching Window=====//
+    //========ScreenShot Web Element(Bir webelementin resmini alma)=====//
+    public static String getScreenshotWebElement(String name,WebElement element) throws IOException {
+        String date = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
+        // TakesScreenshot is an interface of selenium that takes the screenshot
+        File source = element.getScreenshotAs(OutputType.FILE);
+        // full path to the screenshot location
+        String wElementSS = System.getProperty("user.dir") + "/target/WElementScreenshots/" + name + date + ".png";
+        File finalDestination = new File(wElementSS);
+        // save the screenshot to the path given
+        FileUtils.copyFile(source, finalDestination);
+        return  wElementSS;
+    }
+    //========Switching Window(Pencereler arası geçiş)=====//
     public static void switchToWindow(String targetTitle) {
         String origin = Driver.getDriver().getWindowHandle();
         for (String handle : Driver.getDriver().getWindowHandles()) {
@@ -70,7 +53,7 @@ public class ReusableMethods {
         }
         Driver.getDriver().switchTo().window(origin);
     }
-    //========Hover Over=====//
+    //========Hover Over(Elementin üzerinde beklemek)=====//
     public static void hover(WebElement element) {
         Actions actions = new Actions(Driver.getDriver());
         actions.moveToElement(element).perform();
@@ -145,191 +128,6 @@ public class ReusableMethods {
         } catch (Throwable error) {
             System.out.println(
                     "Timeout waiting for Page Load Request to complete after " + timeout + " seconds");
-        }
-    }
-    //======Fluent Wait====//
-    public static WebElement fluentWait(final WebElement webElement, int timeout) {
-        //FluentWait<WebDriver> wait = new FluentWait<WebDriver>(Driver.getDriver()).withTimeout(timeinsec, TimeUnit.SECONDS).pollingEvery(timeinsec, TimeUnit.SECONDS);
-        FluentWait<WebDriver> wait = new FluentWait<WebDriver>(Driver.getDriver())
-                .withTimeout(Duration.ofSeconds(3))//Wait 3 second each time
-                .pollingEvery(Duration.ofSeconds(1));//Check for the element every 1 second
-        WebElement element = wait.until(new Function<WebDriver, WebElement>() {
-            public WebElement apply(WebDriver driver) {
-                return webElement;
-            }
-        });
-        return element;
-    }
-
-    //====== JS Scroll Click ====//
-    public static void jsScrollClick(WebElement webElement) {
-        JavascriptExecutor js = (JavascriptExecutor) Driver.getDriver();
-        try {
-            webElement.click();
-        } catch (Exception e) {
-            js.executeScript("arguments[0].scrollIntoView(true);", webElement);
-            js.executeScript("arguments[0].click()", webElement);
-            waitFor(1);
-        }
-    }
-
-    //====== JS Scroll ====//
-    public static void jsScroll(WebElement webElement) {
-
-        JavascriptExecutor js = (JavascriptExecutor) Driver.getDriver();
-        js.executeScript("arguments[0].scrollIntoView(true);", webElement);
-    }
-    //========ScreenShot Web Element(Bir webelementin resmini alma)=====//
-    public static String getScreenshotWebElement(String name,WebElement element) throws IOException {
-        String date = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
-        // TakesScreenshot is an interface of selenium that takes the screenshot
-        File source = element.getScreenshotAs(OutputType.FILE);
-        // full path to the screenshot location
-        String wElementSS = System.getProperty("user.dir") + "/target/WElementScreenshots/" + name + date + ".png";
-        File finalDestination = new File(wElementSS);
-        // save the screenshot to the path given
-        FileUtils.copyFile(source, finalDestination);
-        return  wElementSS;
-    }
-
-    //====== js ======//
-    public static void jsclick(WebElement webElement){
-        JavascriptExecutor js = (JavascriptExecutor) Driver.getDriver();
-        js.executeScript("arguments[0].click();", webElement);
-        try {
-            webElement.click();
-        } catch (Exception e) {
-            JavascriptExecutor executor = (JavascriptExecutor) Driver.getDriver();
-            executor.executeScript("arguments[0].click();", webElement);
-        }
-    }
-
-    public static void bulveTikla(WebElement webElement) {
-        WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(5));
-        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(webElement));
-        ((JavascriptExecutor) Driver.getDriver()).executeScript("arguments[0].click();", webElement);
-    }
-    public static Random random() { // Feyza
-
-        Random random;
-        return random = new Random();
-    }
-
-    public static WebElement waitForClickable(WebElement element, int timeout) {  // Feyza
-        WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(timeout));
-        return wait.until(ExpectedConditions.elementToBeClickable(element));
-    }
-    public static String Tarih(){
-
-        date = LocalDateTime.now();
-        //DateTimeFormatter formater = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
-        DateTimeFormatter formater = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        tarih = date.format(formater);
-        return tarih;
-    }
-    public static String ileriTarih(){
-
-        date = LocalDateTime.now();
-        //DateTimeFormatter formater = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
-        DateTimeFormatter formater = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        tarih = date.plusDays(10).format(formater);
-        return tarih;
-    }
-    public static String gecmisTarih(){
-
-        date = LocalDateTime.now();
-        //DateTimeFormatter formater = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
-        DateTimeFormatter formater = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        tarih = date.minusDays(10).format(formater);
-        return tarih;
-    }
-    public static String saat(){
-
-        date = LocalDateTime.now();
-        DateTimeFormatter formater = DateTimeFormatter.ofPattern("HHmm");
-        tarih = date.format(formater);
-        return tarih;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public static String setTheDateByRandom (String format,int atMostYear, String direction)
-    {
-        int day = (int) (Math.random() * 366 + 1);
-        int month = (int) (Math.random() * 13 + 1);
-        int year = (int) (Math.random() * atMostYear + 1);
-        LocalDate date = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
-        direction = direction.toUpperCase(Locale.ROOT);
-        String dateF;
-        switch (direction) {
-            case "FEATURE":
-                date = date.plusYears(year).plusMonths(month).plusDays(day);
-                dateF = formatter.format(date);
-                return dateF;
-            case "PAST":
-                date = date.minusYears(year).minusMonths(month).minusDays(day);
-                dateF = formatter.format(date);
-                return dateF;
-            default:
-                dateF = formatter.format(date);
-                return dateF;
         }
     }
 }
