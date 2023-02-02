@@ -4,8 +4,9 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import utilities.ConfigReader;
+import utilities.Driver;
 
-public class automationTestler {
+public class automation {
     @When("kullanici tarayiciyi başlatir")
     public void kullaniciTarayiciyiBaşlatir() {
         Driver.getDriver().get("www.google.com");
@@ -24,48 +25,48 @@ public class automationTestler {
     public void kullaniciKaydolGirişYapDüğmesineTıklar() {
     }
 
-    @And("Yeni Kullanici Kaydini doğrulayin görünür oldugunu dogrular")
-    public void yeniKullaniciKaydiniDoğrulayinGörünürOldugunuDogrular() {
+    @And("kullanici Yeni Kullanici Kaydini doğrulayin görünür oldugunu dogrular")
+    public void kullaniciYeniKullaniciKaydiniDoğrulayinGörünürOldugunuDogrular() {
     }
 
-    @And("Adi ve e-posta adresini girin")
-    public void adiVeEPostaAdresiniGirin() {
+    @And("kullanici Adi ve e-posta adresini girin")
+    public void kullaniciAdiVeEPostaAdresiniGirin() {
     }
 
-    @And("Kaydol dugmesini tiklar")
-    public void kaydolDugmesiniTiklar() {
+    @And("kullanici Kaydol dugmesini tiklar")
+    public void kullaniciKaydolDugmesiniTiklar() {
     }
 
-    @And("HESAP BILGILERINI GIRIN ifadesinin gorundugunu dogrular")
-    public void hesapBILGILERINIGIRINIfadesininGorundugunuDogrular() {
+    @And("kullanici HESAP BILGILERINI GIRIN ifadesinin gorundugunu dogrular")
+    public void kullaniciHESAPBILGILERINIGIRINIfadesininGorundugunuDogrular() {
     }
 
     @And("kullanici Unvan, Ad, E-posta, Parola, Doğum tarihi bilgilerini doldurur")
     public void kullaniciUnvanAdEPostaParolaDoğumTarihiBilgileriniDoldurur() {
     }
 
-    @And("Bultenimize kaydolun onay kutusunu secer.")
-    public void bultenimizeKaydolunOnayKutusunuSecer() {
+    @And("kullanici Bultenimize kaydolun onay kutusunu secer.")
+    public void kullaniciBultenimizeKaydolunOnayKutusunuSecer() {
     }
 
-    @And("Ortaklarimizdan ozel teklifler alin onay kutusunu secer.")
-    public void ortaklarimizdanOzelTekliflerAlinOnayKutusunuSecer() {
+    @And("kullanici Ortaklarimizdan ozel teklifler alin onay kutusunu secer.")
+    public void kullaniciOrtaklarimizdanOzelTekliflerAlinOnayKutusunuSecer() {
     }
 
     @And("kullanici Ad, Soyad, Sirket, Adres, Adres{int}, Ulke, Eyalet, Sehir, Posta Kodu, Cep Numarasi bilgilerini doldurur")
     public void kullaniciAdSoyadSirketAdresAdresUlkeEyaletSehirPostaKoduCepNumarasiBilgileriniDoldurur(int arg0) {
     }
 
-    @And("Hesap Olustur dugmesine tiklar")
-    public void hesapOlusturDugmesineTiklar() {
+    @And("kullanici Hesap Olustur dugmesine tiklar")
+    public void kullaniciHesapOlusturDugmesineTiklar() {
     }
 
-    @And("HESAP OLUSTURULDU gorunur")
-    public void hesapOLUSTURULDUGorunur() {
+    @And("kullanici HESAP OLUSTURULDU gorunur")
+    public void kullaniciHESAPOLUSTURULDUGorunur() {
     }
 
-    @And("Devam Et dügmesine tıklar")
-    public void devamEtDügmesineTıklar() {
+    @And("kullanici Devam Et dügmesine tıklar")
+    public void kullaniciDevamEtDügmesineTıklar() {
     }
 
     @And("kullanici adi olarak oturum acildi ifadesinin gorunur oldugunu dogrular")
